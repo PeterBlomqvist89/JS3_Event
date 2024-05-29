@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useParams } from 'next/navigation';
@@ -41,24 +41,28 @@ const EventDetailPage = () => {
   }
 
   return (
-    <div className="flex flex-col h-screen justify-center items-center">
-      <div className="bg-slate-800 px-5 py-5 rounded-2xl w-1/3 flex flex-col">
-        <h1 className="text-4xl text-center mb-8">{event.eventName}</h1>
-        <p className="mb-1">Date: {formatDate(event.eventDate)}</p>
-        <p className="mb-1">Description: {event.eventDescription}</p>
-        <p className="mb-1">Location: {event.eventLocation}</p>
-        <p className="mb-1">Price: {event.eventPrice} SEK</p>
-        <p className="mb-5">Tickets remaining: {event.eventQuantity}</p>
-        <img
-          src={event.imageURL}
-          alt={event.eventName}
-          className="rounded-3xl w-full object-cover mx-auto max-w-52"
-        />
-        <Link href={`/admin/events/${id}`}>
-          <Button className="w-full mt-5 bg-slate-100/50 transform transition-transform duration-200 hover:scale-105 active:bg-green-500">
-            Book Event
-          </Button>
-        </Link>
+    <div className="flex h-[60vh] justify-center items-center  bg-gray-100">
+      <div className="bg-white rounded-lg shadow-lg p-8 max-w-4xl mx-auto flex flex-col md:flex-row">
+        <div className="flex-1 md:pr-8">
+          <h1 className="text-4xl font-bold mb-4">{event.eventName}</h1>
+          <p className="text-lg mb-2"><span className="font-semibold">Date:</span> {formatDate(event.eventDate)}</p>
+          <p className="text-lg mb-2"><span className="font-semibold">Description:</span> {event.eventDescription}</p>
+          <p className="text-lg mb-2"><span className="font-semibold">Location:</span> {event.eventLocation}</p>
+          <p className="text-lg mb-2"><span className="font-semibold">Price:</span> {event.eventPrice} SEK</p>
+          <p className="text-lg mb-4"><span className="font-semibold">Tickets remaining:</span> {event.eventQuantity}</p>
+          <Link href={`/admin/events/${id}`}>
+            <Button className="w-full py-3 text-lg font-bold text-white bg-blue-600 rounded-lg transform transition-transform duration-200 hover:scale-105 active:bg-blue-700">
+              Book Event
+            </Button>
+          </Link>
+        </div>
+        <div className="flex-shrink-0 md:w-1/2">
+          <img
+            src={event.imageURL}
+            alt={event.eventName}
+            className="w-full h-full object-cover rounded"
+          />
+        </div>
       </div>
     </div>
   );

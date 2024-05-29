@@ -3,6 +3,7 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { CalendarHeart, CircleDollarSign, MapPin, Ticket } from "lucide-react";
 
 function EventsPage() {
   const [events, setEvents] = useState([]);
@@ -29,43 +30,46 @@ function EventsPage() {
     }
   };
 
-
-
-  useEffect(() => { 
+  useEffect(() => {
     fetchEvents();
   }, []);
 
   return (
-    <div className="container mx-auto px-4 mb-40">
-      <h2 className="text-6xl font-bold text-center font-mono py-14">
-        Event List
-      </h2>
-      <div className="grid grid-cols-3 gap-10">
-        {events.map((event) => (
-          <div className="max-h-96" key={event.id}>
-            <Link event={event}
+    <div className="min-h-screen bg-gray-100">
+      <div className="container mx-auto px-4 mb-40">
+        <h2 className="text-6xl font-bold text-center py-14 text-blue-600">Event List</h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {events.map((event) => (
+            <Link
               key={event.id}
               href={`/events/${event.id}`}
-              className="p-6 rounded-lg border-2 shadow-lg cursor-pointer pb flex flex-col gap-4"
+              className="p-6 border-2 shadow-lg cursor-pointer flex flex-col gap-4 bg-white"
             >
-              <h1 className=" text-center uppercase font-bold text-2xl">{event.eventName}</h1>
-              <img className="object-cover max-h-40 max-w-60 rounded mx-auto"
-                src={event.imageURL}
-                alt={event.eventName}
-              />
-              <p className="text-sm text-muted-foreground flex items-center gap-2">
-                <span className="font-semibold">Date:</span> {event.eventDate}
-              </p>
-              <p className="text-sm text-muted-foreground flex items-center gap-2">
-                <span className="font-semibold">Price:</span>{event.eventPrice}
-              </p>
-
-              <p className="text-sm text-muted-foreground flex items-center gap-2">
-                <span className="font-semibold">Location:</span>{event.eventLocation}
-              </p>
+              <div className="flex flex-col h-full">
+                <img
+                  className="object-cover h-40 w-full rounded"
+                  src={event.imageURL}
+                  alt={event.eventName}
+                />
+                <h1 className="text-center uppercase font-bold text-2xl mt-4 text-blue-600 mb-4">
+                  {event.eventName}
+                </h1>
+                <p className="text-sm text-muted-foreground flex items-center gap-2 mt-auto mb-2">
+                  <span className="font-semibold flex gap-2"><CalendarHeart className="text-blue-600" />Date:</span> {event.eventDate}
+                </p>
+                <p className="text-sm text-muted-foreground flex items-center gap-2 mt-auto mb-2">
+                  <span className="font-semibold flex gap-2"><CircleDollarSign className="text-blue-600"/>Price:</span>{event.eventPrice} :- SEK
+                </p>
+                <p className="text-sm text-muted-foreground flex items-center gap-2 mt-auto mb-2">
+                  <span className="font-semibold flex gap-2"><MapPin className="text-blue-600"/>Location:</span>{event.eventLocation}
+                </p>
+                <p className="text-sm text-muted-foreground flex items-center gap-2 mb-4">
+                  <span className="font-semibold flex gap-2"><Ticket className="text-blue-600"/>Tickets Remaining:</span>{event.availableTickets}
+                </p>
+              </div>
             </Link>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </div>
   );

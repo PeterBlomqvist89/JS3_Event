@@ -2,6 +2,18 @@
   @tailwind components;
   @tailwind utilities;
 
+  .backgroundImage {
+
+    background-image: url('/images/event.jpg');
+    
+    background-size: cover;
+  
+    background-position: center;
+  
+    background-repeat: no-repeat;
+  
+  }
+
   @layer base {
     :root {
       --background: 0 0% 100%;
