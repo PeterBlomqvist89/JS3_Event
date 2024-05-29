@@ -15,9 +15,19 @@ function EventsPage() {
       const response = await axios.get("http://localhost:3001/api/events");
 
       const eventData = response.data.map((event) => {
+        // Konvertera eventDate till önskat format: år, månad, dag, timmar och minuter
+        const eventDateTime = new Date(event.eventDate.seconds * 1000);
+        const formattedEventDate = eventDateTime.toLocaleString('sv-SE', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit'
+        });
+  
         return {
           ...event,
-          eventDate: new Date(event.eventDate?.seconds * 1000).toLocaleString(),
+          eventDate: formattedEventDate,
         };
       });
       setEvents(eventData);
@@ -35,8 +45,8 @@ function EventsPage() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gray-100">
-      <div className="container mx-auto px-4 mb-40">
+    <div className="flex flex-col min-h-screen bg-gray-100">
+      <div className="container mx-auto px-4 flex-grow">
         <h2 className="text-6xl font-bold text-center py-14 text-blue-600">Event List</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {events.map((event) => (
@@ -70,6 +80,8 @@ function EventsPage() {
             </Link>
           ))}
         </div>
+      </div>
+      <div className="py-4 bg-gray-100 mb-20">
       </div>
     </div>
   );

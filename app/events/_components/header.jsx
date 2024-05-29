@@ -11,12 +11,14 @@ const Header = () => {
     <nav>
     <ul className="flex justify-between items-center bg-blue-600 py-12 px-4">
         <Link href="/" className="font-semibold   text-white text-xl ">Event Horizon</Link>
+        <Link href="/" className="font-semibold   text-white text-xl ">
         <Image 
         src="/images/logo.png" 
         width={200}
         height={200}
         alt="logo" 
          />
+        </Link>
         <div className="flex gap-4 items-center">
         <li className="flex justify-center items-center">
             <Link className="text-white px-4 font-semibold   hover:text-blue-800" href="/events">Event List</Link>
