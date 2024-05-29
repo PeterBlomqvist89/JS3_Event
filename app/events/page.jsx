@@ -45,7 +45,7 @@ function EventsPage() {
           <div className="max-h-96" key={event.id}>
             <Link event={event}
               key={event.id}
-              href={`http://localhost:3001/api/events/${event.id}`}
+              href={`/events/${event.id}`}
               className="p-6 rounded-lg border-2 shadow-lg cursor-pointer pb flex flex-col gap-4"
             >
               <h1 className=" text-center uppercase font-bold text-2xl">{event.eventName}</h1>

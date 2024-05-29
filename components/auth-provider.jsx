@@ -30,7 +30,7 @@ const AuthContextProvider = ({ children }) => {
             if(!userCredential.user) {
                 throw new Error('Something went wrong, please try again later.')
             }
-            console.log(userCredential);
+            // console.log(userCredential);
 
             await updateProfile(userCredential.user, {
                 displayName: `${values.firstName} ${values.lastName}`
@@ -38,8 +38,8 @@ const AuthContextProvider = ({ children }) => {
 
             toast.success('Account created!', { id: toastId })
         } catch (err) {
-            console.log(err.message);
-            console.log(err.code);
+            // console.log(err.message);
+            // console.log(err.code);
             const message = err.code.split('/')[1].replace(/-/g, ' ')
             toast.error(message || err.message, { id: toastId })
         }

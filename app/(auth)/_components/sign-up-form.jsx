@@ -51,7 +51,7 @@ const SignUpForm = () => {
           // Skapa användare med Firebase Authentication
           const userCredential = await createUserWithEmailAndPassword(auth, values.email, values.password);
           const user = userCredential.user;
-          console.log("User created: ", user);
+          // console.log("User created: ", user);
 
           // Lägga till användardata i Firestore med rollen 'user'
           await addDoc(collection(db, "users"), {
@@ -62,7 +62,7 @@ const SignUpForm = () => {
             role: "user" // Tilldela standardrollen 'user'
           });
 
-          console.log("User added to Firestore with ID: ", user.uid);
+          // console.log("User added to Firestore with ID: ", user.uid);
           toast.success('Registreringen lyckades!');
         } catch (error) {
           console.error("Error creating user: ", error);
