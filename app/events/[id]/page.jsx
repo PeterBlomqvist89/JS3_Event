@@ -43,7 +43,7 @@ const EventDetailPage = () => {
     const hours = date.getHours().toString().padStart(2, '0');
     const minutes = date.getMinutes().toString().padStart(2, '0');
   
-    return `${day}/${month}/${year} ${hours}:${minutes}`;
+    return `${day}/${month}/${year} Kl:${hours}:${minutes}`;
   };
 
   const bookEvent = async () => {
@@ -117,7 +117,7 @@ const EventDetailPage = () => {
             )}
             <span className="font-semibold">Tickets remaining:</span> {event.availableTickets}
           </p>          
-          {isBooked ? (
+        {isBooked ? (
             <Button
               onClick={cancelBooking}
               className="w-full py-3 text-lg font-bold text-white bg-red-600 rounded-lg transform transition-transform duration-200 active:bg-red-700 hover:bg-red-700"

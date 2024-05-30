@@ -101,7 +101,7 @@ function EventsPage() {
                     <Ticket className={event.availableTickets === 0 ? "text-red-600 -mt-0.5 line-through" : "text-blue-600 -mt-0.5"} />
                     Tickets Remaining:
                   </span>
-                  <span className={event.availableTickets === 0 ? "text-red-600 font-semibold line-through" : "font-semibold"}>{event.availableTickets}</span>
+                  <span className={event.availableTickets === 0 ? "text-red-600 font-semibold line-through" : "text-green-600 font-semibold"}>{event.availableTickets}</span>
                 </p>
               </div>
             </Link>
