@@ -113,7 +113,7 @@ const EventDetailPage = () => {
             {event.availableTickets === 0 ? (
               <TicketSlash className="text-red-600 size-8 flex-shrink-0" />
             ) : (
-              <TicketSlash className="text-blue-600 size-8 flex-shrink-0" />
+              <TicketSlash className="text-green-600 size-8 flex-shrink-0" />
             )}
             <span className="font-semibold">Tickets remaining:</span> {event.availableTickets}
           </p>          

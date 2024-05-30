@@ -4,11 +4,20 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import { CalendarHeart, CircleDollarSign, MapPin, Ticket } from 'lucide-react';
-import Image from 'next/image';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+
 
 function EventsPage() {
   const [events, setEvents] = useState([]);
   const [isLoading, setLoading] = useState(true);
+  const [sortType, setSortType] = useState('date'); // Default sort by date
 
   const fetchEvents = async () => {
     try {
@@ -16,7 +25,6 @@ function EventsPage() {
       const response = await axios.get(process.env.NEXT_PUBLIC_API_ROUTE);
 
       const eventData = response.data.map((event) => {
-        // Convert eventDate to the desired format: year, month, day, hours, and minutes
         const eventDateTime = new Date(event.eventDate.seconds * 1000);
         const formattedEventDate = eventDateTime.toLocaleString('sv-SE', {
           year: 'numeric',
@@ -29,11 +37,12 @@ function EventsPage() {
         return {
           ...event,
           eventDate: formattedEventDate,
+          eventDateTime // Add eventDateTime for sorting and filtering purposes
         };
       });
+
       setEvents(eventData);
       setLoading(false);
-      console.log(eventData);
     } catch (err) {
       console.log('Error', err);
       setLoading(false);
@@ -45,6 +54,28 @@ function EventsPage() {
     fetchEvents();
   }, []);
 
+  const handleSortChange = (value) => {
+    setSortType(value);
+  };
+
+  const filterOldEvents = (events) => {
+    const now = new Date();
+    return events.filter(event => new Date(event.eventDateTime) >= now);
+  };
+
+  const sortEvents = (events) => {
+    switch (sortType) {
+      case 'date':
+        return events.sort((a, b) => new Date(a.eventDateTime) - new Date(b.eventDateTime));
+      case 'location':
+        return events.sort((a, b) => a.eventLocation.localeCompare(b.eventLocation));
+      default:
+        return events;
+    }
+  };
+
+  const filteredAndSortedEvents = sortEvents(filterOldEvents(events));
+
   return (
     <div className="flex flex-col min-h-screen bg-gray-100">
       <div className="relative h-80 bg-cover bg-center bg-fixed mb-20" style={{ backgroundImage: "url('/images/header.jpg')" }}>
@@ -52,8 +83,19 @@ function EventsPage() {
       </div>
 
       <div className="container mx-auto px-4 flex-grow">
+        <div className="flex justify-end mb-4">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <button className="w-28 font-semibold h-12  border rounded-xl bg-blue-500 text-white flex justify-center text-center items-center">Sort By</button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuItem onClick={() => handleSortChange('date')}>Date</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => handleSortChange('location')}>Location</DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {events.map((event) => (
+          {filteredAndSortedEvents.map((event) => (
             <Link
               key={event.id}
               href={`/events/${event.id}`}
