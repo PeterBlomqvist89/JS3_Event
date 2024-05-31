@@ -1,4 +1,4 @@
-#Event Page Application
+## Event Page Application
 
 This app is built with Next.js. It uses an API created in a previous group project.
 Getting Started
