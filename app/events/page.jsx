@@ -8,8 +8,6 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 
@@ -140,7 +138,7 @@ function EventsPage() {
                 </p>
                 <p className={event.availableTickets === 0 ? "text-sm text-muted-foreground flex text-center items-center gap-2 mb-3 justify-between border-b text-red-600 -mt-0.5 line-through" : "text-sm text-muted-foreground flex text-center items-center gap-2 mb-3 justify-between border-b"}>
                   <span className="font-semibold text-center flex gap-2">
-                    <Ticket className={event.availableTickets === 0 ? "text-red-600 -mt-0.5 line-through" : "text-blue-600 -mt-0.5"} />
+                    <Ticket className={event.availableTickets === 0 ? "text-red-600 -mt-0.5 line-through" : "text-green-600 -mt-0.5"} />
                     Tickets Remaining:
                   </span>
                   <span className={event.availableTickets === 0 ? "text-red-600 font-semibold line-through" : "text-green-600 font-semibold"}>{event.availableTickets}</span>

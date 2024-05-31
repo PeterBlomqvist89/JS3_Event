@@ -1,11 +1,8 @@
 'use client'
 
 import { Button } from "@/components/ui/button"
-import { db } from "@/firebase/config"
-import { doc, getDoc } from "firebase/firestore"
 import Image from "next/image"
 import Link from "next/link"
-import { useEffect, useState } from "react"
 
 function LandingPage() {
  
