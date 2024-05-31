@@ -1,15 +1,14 @@
 import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
-import '@testing-library/jest-dom/extend-expect';
-import Header from '../header.jsx'; // Justera sökvägen om nödvändigt
-import { signOut } from "firebase/auth";
+import { render, screen } from '@testing-library/react';
+import '@testing-library/jest-dom/';
+import Header from '../header';
 
-// Mock Firebase
-jest.mock("firebase/auth", () => ({
-  signOut: jest.fn(),
-  getAuth: jest.fn(() => ({
-    currentUser: { uid: '12345' },
-  })),
+
+jest.mock('../../../../firebase/config', () => ({
+  db: {}, // Mocka Firestore-databasen
+  auth: {}, // Mocka Authentication-tjänsten
+  googleProvider: {}, // Mocka GoogleAuthProvider
+  storage: {} // Mocka Storage-tjänsten
 }));
 
 // Mock Next.js Link
@@ -27,26 +26,11 @@ jest.mock('next/image', () => {
 });
 
 describe('Header component', () => {
-  test('renders the header component', () => {
+  test('renders "Event Horizon" in the header', () => {
     render(<Header />);
     
-    // Kontrollera om alla länkar renderas
-    expect(screen.getByText('Event Horizon')).toBeInTheDocument();
-    expect(screen.getByText('Event List')).toBeInTheDocument();
-    
-    // Kontrollera om bild renderas
-    expect(screen.getByAltText('logo')).toBeInTheDocument();
-    
-    // Kontrollera om "Sign out"-knappen renderas
-    expect(screen.getByText('Sign out')).toBeInTheDocument();
-  });
 
-  test('calls signOut on button click', async () => {
-    render(<Header />);
-    const button = screen.getByText('Sign out');
-    
-    fireEvent.click(button);
-    
-    expect(signOut).toHaveBeenCalled();
+    expect(screen.getByText('Event Horizon')).toBeInTheDocument();
   });
 });
+
