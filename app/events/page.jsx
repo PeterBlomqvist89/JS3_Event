@@ -9,13 +9,14 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-
+} from "@/components/ui/dropdown-menu";
 
 function EventsPage() {
   const [events, setEvents] = useState([]);
   const [isLoading, setLoading] = useState(true);
-  const [sortType, setSortType] = useState('date'); // Default sort by date
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
+  const [location, setLocation] = useState('');
 
   const fetchEvents = async () => {
     try {
@@ -39,7 +40,12 @@ function EventsPage() {
         };
       });
 
-      setEvents(eventData);
+      // Filter out old events and sort events by date with nearest date first
+      const now = new Date();
+      const validEvents = eventData.filter(event => new Date(event.eventDateTime) >= now);
+      validEvents.sort((a, b) => new Date(a.eventDateTime) - new Date(b.eventDateTime));
+
+      setEvents(validEvents);
       setLoading(false);
     } catch (err) {
       console.log('Error', err);
@@ -52,27 +58,20 @@ function EventsPage() {
     fetchEvents();
   }, []);
 
-  const handleSortChange = (value) => {
-    setSortType(value);
+  const filterEvents = (events) => {
+    return events.filter(event => {
+      const eventDate = new Date(event.eventDateTime);
+      const start = startDate ? new Date(startDate) : null;
+      const end = endDate ? new Date(endDate) : null;
+
+      const isWithinDateRange = (!start || eventDate >= start) && (!end || eventDate <= end);
+      const isAtLocation = !location || event.eventLocation.toLowerCase().includes(location.toLowerCase());
+
+      return isWithinDateRange && isAtLocation;
+    });
   };
 
-  const filterOldEvents = (events) => {
-    const now = new Date();
-    return events.filter(event => new Date(event.eventDateTime) >= now);
-  };
-
-  const sortEvents = (events) => {
-    switch (sortType) {
-      case 'date':
-        return events.sort((a, b) => new Date(a.eventDateTime) - new Date(b.eventDateTime));
-      case 'location':
-        return events.sort((a, b) => a.eventLocation.localeCompare(b.eventLocation));
-      default:
-        return events;
-    }
-  };
-
-  const filteredAndSortedEvents = sortEvents(filterOldEvents(events));
+  const filteredEvents = filterEvents(events);
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-100">
@@ -81,19 +80,31 @@ function EventsPage() {
       </div>
 
       <div className="container mx-auto px-4 flex-grow">
-        <div className="flex justify-end mb-4">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <button className="w-28 font-semibold h-12  border rounded-xl bg-blue-500 text-white flex justify-center text-center items-center">Sort By</button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              <DropdownMenuItem onClick={() => handleSortChange('date')}>Date</DropdownMenuItem>
-              <DropdownMenuItem onClick={() => handleSortChange('location')}>Location</DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+        <div className="flex justify-between mb-4">
+          <div className="flex gap-4">
+            <input
+              type="date"
+              value={startDate}
+              onChange={(e) => setStartDate(e.target.value)}
+              className="border rounded px-2 py-1"
+            />
+            <input
+              type="date"
+              value={endDate}
+              onChange={(e) => setEndDate(e.target.value)}
+              className="border rounded px-2 py-1"
+            />
+            <input
+              type="text"
+              value={location}
+              onChange={(e) => setLocation(e.target.value)}
+              placeholder="Enter location"
+              className="border rounded px-2 py-1"
+            />
+          </div>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {filteredAndSortedEvents.map((event) => (
+          {filteredEvents.map((event) => (
             <Link
               key={event.id}
               href={`/events/${event.id}`}
